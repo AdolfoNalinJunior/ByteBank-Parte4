@@ -10,21 +10,43 @@ namespace ByteBank
     {
         static void Main(string[] args)
         {
-            Metodo();
+            try
+            {
+                Metodo();
+            }
+            catch (NullReferenceException erro) // Tratamento de erro da referência
+            {
+                Console.WriteLine(erro.StackTrace);
+                Console.WriteLine(erro.Message);
+                Console.WriteLine("Aconteceu um erro!! ");
+            }
         }
 
         private static void Metodo()
         {
-            TestaDivisao(10);
+            TestaDivisao(0);
         }
 
         private static void TestaDivisao(int divisor)
         {
-            int resultado = Dividir(10, divisor);
+            try
+            {
+                int resultado = Dividir(10, divisor);
+                Console.WriteLine("Resultado da divisão de 10 por " + divisor + " é " + resultado);
+            }
+            catch (DivideByZeroException erro) // Tratamento de erro de Divisão por zero
+            {
+                Console.WriteLine(erro.Message);
+                Console.WriteLine(erro.StackTrace);
+                Console.WriteLine("Nào é possivel fazer divisão por 0! ");
+            }
         }
 
         private static int Dividir(int numero, int divisor)
         {
+            // Erro de referência
+            ContaCorrente conta = null;
+            Console.WriteLine(conta.Saldo);
             return numero / divisor;
         }
     }
