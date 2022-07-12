@@ -1,4 +1,5 @@
 ﻿// using _05_ByteBank;
+using System;
 
 namespace ByteBank
 {
@@ -10,24 +11,9 @@ namespace ByteBank
         public static int TotalDeContasCriadas { get; private set; }
 
 
-        private int _agencia;
-        public int Agencia
-        {
-            get
-            {
-                return _agencia;
-            }
-            set
-            {
-                if (value <= 0)
-                {
-                    return;
-                }
-
-                _agencia = value;
-            }
-        }
-        public int Numero { get; set; }
+        public int Agencia { get; }
+        
+        public int Numero { get; }
 
         private double _saldo = 100;
 
@@ -51,8 +37,17 @@ namespace ByteBank
 
         public ContaCorrente(int agencia, int numero)
         {
-            Agencia = agencia;
-            Numero = numero;
+            if (agencia <= 0)
+            {
+                throw new ArgumentException("O argumento Agencia deve ser maior que 0", nameof(agencia));
+            }
+            else if (numero <= 0)
+            {
+                throw new ArgumentException("O argumento Número deve ser miaor que 0.", nameof(numero));
+            }
+
+            this.Agencia = agencia;
+            this.Numero = numero;
 
             TotalOperacao = 30 / TotalDeContasCriadas;
 
@@ -79,6 +74,7 @@ namespace ByteBank
 
         public bool Transferir(double valor, ContaCorrente contaDestino)
         {
+
             if (_saldo < valor)
             {
                 return false;

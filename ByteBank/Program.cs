@@ -12,19 +12,24 @@ namespace ByteBank
         {
             try
             {
+                ContaCorrente conta = new ContaCorrente(0, 0);
                 Metodo();
             }
-            catch (DivideByZeroException) // Tratamento mais expecifico
+            catch (ArgumentException ex)
             {
-                Console.WriteLine("Nâo é possível realizar divisâo por zero. ");
+                Console.WriteLine("Ocorreu uma exeção do tipo ArgumentExeception. ");
+                Console.WriteLine(ex.ParamName);
+                Console.WriteLine(ex.Message); 
             }
-            catch (Exception erro) // Tratamento mais generaizado
+            catch (Exception) // Tratamento mais generaizado
             {
-                Console.WriteLine(erro.StackTrace);
-                Console.WriteLine(erro.Message);
                 Console.WriteLine("Aconteceu um erro!! ");
             }
           
+            //catch (DivideByZeroException) // Tratamento mais expecifico
+            //{
+            //    Console.WriteLine("Nâo é possível realizar divisâo por zero. ");
+            //}
 
         }
 
