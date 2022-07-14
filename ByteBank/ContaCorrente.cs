@@ -17,31 +17,15 @@ namespace ByteBank
 
         private double _saldo = 100;
 
-        public double Saldo
-        {
-            get
-            {
-                return _saldo;
-            }
-            set
-            {
-                if (value < 0)
-                {
-                    return;
-                }
-
-                _saldo = value;
-            }
-        }
-
+        public double Saldo { get ; }
 
         public ContaCorrente(int agencia, int numero)
         {
-            if (agencia <= 0)
+            if (agencia < 0)
             {
                 throw new ArgumentException("O argumento Agencia deve ser maior que 0", nameof(agencia));
             }
-            else if (numero <= 0)
+            else if (numero < 0)
             {
                 throw new ArgumentException("O argumento Número deve ser miaor que 0.", nameof(numero));
             }
@@ -56,9 +40,14 @@ namespace ByteBank
 
         public void Sacar(double valor)
         {
-            if (_saldo < valor)
+            if (valor < 0)
             {
-                throw new SaldoInsuficienteException("Saldo insuficiente para o saque no valor " + valor);
+                throw new ArgumentException("Valor inválido para saque: " + nameof(valor));
+            }
+
+            else if (_saldo < valor)
+            {
+                throw new SaldoInsuficienteException(Saldo, valor);
             }
             else
             {
@@ -72,17 +61,16 @@ namespace ByteBank
         }
 
 
-        public bool Transferir(double valor, ContaCorrente contaDestino)
+        public void Transferir(double valor, ContaCorrente contaDestino)
         {
 
-            if (_saldo < valor)
+            if (valor < 0)
             {
-                return false;
+                throw new ArgumentException("Valor inválido para tranferência: " + nameof(valor));
             }
 
-            _saldo -= valor;
+            Sacar(valor);
             contaDestino.Depositar(valor);
-            return true;
         }
     }
 }
